@@ -3,7 +3,7 @@
 > 这里利用《都看影视》app的api，做一个react native for Android 版本的程序 
 
 # 1、Splash 完成
-> Splash只是`Animate` 一个组件就可以了，通过使用该组件发现，组件内部实际上维护了一个定时器，该定时器会更新所需要的一些属性值，动态绘制到layout上
+> Splash只是`Animated` 一个组件就可以了，通过使用该组件发现，组件内部实际上维护了一个定时器，该定时器会更新所需要的一些属性值，动态绘制到layout上
 
 ### Setup 1 设定初始值  
     getInitialState: function() {
