@@ -10,6 +10,7 @@
     "react-native-drawer": "^1.4.7",
     "react-native-icons": "^0.5.1",
     "react-native-viewpager": "^0.1.2",
-    "react-timer-mixin": "^0.13.3"
+    "react-timer-mixin": "^0.13.3",
+	"react-native-scrollable-tab-view":"0.2.1-alpha"
   }
 }
