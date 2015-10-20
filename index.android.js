@@ -16,13 +16,13 @@ var {
 } = React;
 
 var {Icon,} = require('react-native-icons');
-var SplashScreen = require('./SplashScreen');
+var SplashScreen = require('./app/android/views/SplashScreen');
 var TimerMixin = require('react-timer-mixin');
 var ToolbarAndroid = require('ToolbarAndroid');
-var MainToolbar = require('./MainToolbar');
+var MainToolbar = require('./app/android/views/MainToolbar');
 var _navigator;
 
-var Home = require('./Home');
+var Home = require('./app/android/views/Home');
 
 var doukanmv = React.createClass({
 	mixins: [TimerMixin],
