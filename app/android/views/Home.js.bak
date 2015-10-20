@@ -1,0 +1,161 @@
+'use strict';
+
+var React = require('react-native');
+var {
+  AppRegistry,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  Dimensions,
+  ToastAndroid,
+  TouchableHighlight,
+  TouchableNativeFeedback
+} = React;
+
+var ScrollableTabView = require('react-native-scrollable-tab-view');
+var HomeTabBar = require('./HomeTabBar');
+var deviceWidth = Dimensions.get('window').width;
+var Video = require('../model/Video');
+
+var videoTypies = Video.videoTpies;
+
+
+var ListCategory = React.createClass({
+		getInitialState () {
+			return {
+				name: this.props.name,
+				list: this.props.list
+			};
+		},
+		renderAll () {
+			var nodes = this.state.list;
+			var n = Math.ceil(nodes.length / 3);
+			var r = [];
+			for(var i = 1; i <= n; i++) {
+				r.push(nodes.slice((i - 1)*3, i*3));	
+			}
+			return r.map(this.renderRow);
+		},
+		renderRow (row) {
+			return (
+				<View >
+					{row.map(this.renderRowCell)}
+				</View>
+			);
+		},
+		viewPrograme (id) {
+			ToastAndroid(id,ToastAndroid.SHORT);	
+		},
+		renderRowCell (cell) {
+			var TouchableElement = TouchableHighlight;
+			if (Platform.OS === 'android') {
+				TouchableElement = TouchableNativeFeedback;
+			}
+
+			return(
+				<TouchableElement 
+					onPress={this.viewProgram(cell.id)}
+				>
+					<View >
+						<View>
+							<Image source={{uri:cell.vthumbur}} />
+						</View>
+						<View>
+							<Text>{cell.programname}</Text>
+						</View>
+						<View>
+							<Text>{cell.shortdesc}</Text>
+						</View>
+
+					</View>
+				</TouchableElement>
+
+			);
+		},
+		render (){
+			return (
+				<View>
+					<View>
+						<Text>{'| '+ this.state.name}</Text>
+					</View>
+					{this.renderAll()}
+				</View>
+			);	
+		}
+	
+});
+//4000988511
+
+var Home = React.createClass({
+		onChange(page){
+			this.setState({currentPage: page - 0 });
+			this.fetchVideos();
+		},
+		getInitialState() {
+			return {
+				isLoading: false,
+				movie: [],
+				tv: [],
+				zy: [],
+				katong: [],
+				recommend: [],
+				currentPage: 0,
+			};
+		},
+		componentDidMount(){
+			this.fetchVideos();		
+		},
+		fetchVideos(){
+			var videoType = videoTypies[this.state.currentPage];
+			new Video().hot(videoType.name).then(function(data){
+				var temp = {};
+				temp[videoType.name] = data.result;
+				this.setState(temp);	
+			});
+		},
+		render() {
+			var bars = videoTypies.map((tab, i) => {
+				return (
+					<ScrollView tabLabel={tab.name} style={styles.tabView}>
+						<Text>{tab.name}</Text>
+						/*{this.state[tab.name].map((hots)=>{
+							<ListCategory  name={hots.name} list={hots.list}/>
+						})}*/
+					</ScrollView>	
+				);	
+			});
+			return (
+				<View style={styles.container}>
+					<ScrollableTabView renderTabBar={() => <HomeTabBar />}>
+						{bars}
+					</ScrollableTabView>
+			  </View>
+			);
+	  }
+});
+
+var styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  tabView: {
+    width: deviceWidth,
+    padding: 10,
+  },
+  card: {
+    borderWidth: 1,
+    backgroundColor: '#fff',
+    borderColor: 'rgba(0,0,0,0.1)',
+    margin: 5,
+    height: 150,
+    padding: 15,
+    shadowColor: '#ccc',
+    shadowOffset: {width: 2, height: 2},
+    shadowOpacity: 0.5,
+    shadowRadius: 3,
+  },
+});
+
+module.exports = Home; 
