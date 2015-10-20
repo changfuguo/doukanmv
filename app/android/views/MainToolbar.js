@@ -19,15 +19,14 @@ var {
   ToastAndroid,
 } = React;
 
-var {Icon,} = require('react-native-icons');
 var SwitchAndroid = require('SwitchAndroid');
 var ToolbarAndroid = require('ToolbarAndroid');
 var statusBarSize = Platform.OS == 'ios' ? 10 : 0;
 
 // Const menu config 
 var CONST_MENUS = [
-		{icon:'home',text:'主页',value:'home'},
-		{icon:'list-ol',text:'分类',value:'category'},
+		{icon:'home',text:'主页',value:'home',},
+		{icon:'list_ol',text:'分类',value:'list_ol'},
 		{icon:'search',text:'搜索',value:'search'},
 		{icon:'user',text:'用户中心',value:'user'},
 		{icon:'cog',text:'设置',value:'settings'},
@@ -44,39 +43,77 @@ var MainToolbar = React.createClass({
 		this.setState({active:name});
 		this.props.onselect(name);
 	},
+	isActive(menu){
+		return menu === this.state.active;	
+	},
 	render: function () {
 		var TouchableElement = TouchableHighlight;
 		if (Platform.OS === 'android') {
 			TouchableElement = TouchableNativeFeedback;	
 		}
-		var menus=CONST_MENUS.map((menu) =>{
-				var icon = 'fontawesome|' + menu.icon;
-				var isCurrent = menu.value == this.state.active;
-
-				return (<TouchableElement onPress={()=> this.onSelect(menu.value)}>
+		return (
+			<View {...this.props}>
+				<View style={styles.actionsContainer}>
+				<TouchableElement onPress={()=> this.onSelect('home')}>
 							<View style={styles.actionItem}>
 								<View style={styles.actionIconRow}>
-										<Icon 
-											name = {icon}
-											size={30}
-											color={isCurrent ? '#0a78eb' :'#999999'}
-											style={styles.actionIcon}
-										/>
+									<Image source = {this.isActive('home') ? require('image!ic_home_active') : require('image!ic_home')} style={styles.actionIcon}/>
 								</View>
 								<View style={styles.actionIconRow}>
-									<Text style={[styles.actionText,isCurrent ? styles.actionActive:'']}>
-										{menu.text}
+									<Text style={[styles.actionText, this.isActive('home') ? styles.actionActive : '']}>
+										主页
 									</Text>
 								</View>
 							</View>
 					</TouchableElement>
-				);
-		 });
-
-		return (
-			<View {...this.props}>
-				<View style={styles.actionsContainer}>
-				{menus}
+					<TouchableElement onPress={()=> this.onSelect('list_ol')}>
+							<View style={styles.actionItem}>
+								<View style={styles.actionIconRow}>
+									<Image source = {this.isActive('list_ol') ? require('image!ic_list_ol_active'):require('image!ic_list_ol')} style={styles.actionIcon}/>
+								</View>
+								<View style={styles.actionIconRow}>
+									<Text style={[styles.actionText, this.isActive('list_ol') ? styles.actionActive : '']}>
+										分类
+									</Text>
+								</View>
+							</View>
+					</TouchableElement>
+					<TouchableElement onPress={()=> this.onSelect('search')}>
+							<View style={styles.actionItem}>
+								<View style={styles.actionIconRow}>
+									<Image source = {this.isActive('search') ? require('image!ic_search_active') : require('image!ic_search')} style={styles.actionIcon}/>
+								</View>
+								<View style={styles.actionIconRow}>
+									<Text style={[styles.actionText, this.isActive('search') ? styles.actionActive : '']}>
+										搜索
+									</Text>
+								</View>
+							</View>
+					</TouchableElement>
+					<TouchableElement onPress={()=> this.onSelect('user')}>
+							<View style={styles.actionItem}>
+								<View style={styles.actionIconRow}>
+									<Image source = {this.isActive('user') ? require('image!ic_user_active') : require('image!ic_user')} style={styles.actionIcon}/>
+								</View>
+								<View style={styles.actionIconRow}>
+									<Text style={[styles.actionText,this.isActive('user') ? styles.actionActive : '']}>
+										用户
+									</Text>
+								</View>
+							</View>
+					</TouchableElement>
+					<TouchableElement onPress={()=> this.onSelect('cog')}>
+							<View style={styles.actionItem}>
+								<View style={styles.actionIconRow}>
+									<Image source = { this.isActive('cog')? require('image!ic_cog_active'):require('image!ic_cog')} style={styles.actionIcon}/>
+								</View>
+								<View style={styles.actionIconRow}>
+									<Text style={[styles.actionText,this.isActive('cog') ? styles.actionActive:'']}>
+										设置
+									</Text>
+								</View>
+							</View>
+					</TouchableElement>
 				</View>
 			</View>
 		);

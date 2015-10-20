@@ -15,7 +15,6 @@ var {
   ToastAndroid,
 } = React;
 
-var {Icon,} = require('react-native-icons');
 var SplashScreen = require('./app/android/views/SplashScreen');
 var TimerMixin = require('react-timer-mixin');
 var ToolbarAndroid = require('ToolbarAndroid');
@@ -51,7 +50,7 @@ var doukanmv = React.createClass({
 					<Home />
 				</View>
 			);
-		} else if (name === 'category') {
+		} else if (name === 'list_ol') {
 			return (	
 				<View style={styles.container}>
 					<Text style={styles.welcome}>

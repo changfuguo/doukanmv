@@ -7,10 +7,10 @@ var {
   Text,
   TouchableOpacity,
   View,
+  Image,
   Animated,
 } = React;
 
-var {Icon,} = require('react-native-icons');
 var deviceWidth = Dimensions.get('window').width;
 
 var styles = StyleSheet.create({
@@ -35,6 +35,7 @@ var styles = StyleSheet.create({
 		width:10,
 		padding:0,
 		marginTop:-1,
+		rotation:90
 	}
 });
 
@@ -77,7 +78,7 @@ var DefaultTabBar = React.createClass({
 				{this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
 			</View>
 			<Animated.View style={[tabUnderlineStyle, {left: left}]} >
-				<Icon name='fontawesome|play' color='rgba(0,0,0,.8)' size ={10} rotation={90} style={styles.arrow}/>
+				<Image source={require('image!ic_play')} style={styles.arrow}/>
 			</Animated.View>
 		</View>
     );

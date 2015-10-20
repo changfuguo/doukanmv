@@ -1,7 +1,5 @@
 package com.doukanmv;
 
-import com.smixx.reactnativeicons.IconFont;
-import com.smixx.reactnativeicons.ReactNativeIcons;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -30,10 +28,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
                 .setBundleAssetName("index.android.bundle")
                 .setJSMainModuleName("index.android")
                 .addPackage(new MainReactPackage())
-				.addPackage(new ReactNativeIcons(Arrays.asList(
-					new IconFont("fontawesome", "FontAwesome.otf")
-				 )))
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
+				.setUseDeveloperSupport(BuildConfig.DEBUG)
                 .setInitialLifecycleState(LifecycleState.RESUMED)
                 .build();
 
