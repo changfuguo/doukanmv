@@ -39,7 +39,8 @@ var doukanmv = React.createClass({
 				this.setState({splashed: true});
 			},
 			2000,
-		);	  
+		);
+		console.log('aaa in mount');
 	},
 	RouteManager: function (route, navigationOperations, onComponentRef) {
 		_navigator = navigationOperations;
