@@ -102,6 +102,23 @@ android 里面的图片需要设置好几种样式，同时还的去找不同图
 # 4、主页功能
  主页功能按照不同分类只是占时top N
 
+> 主页的tab采用了![react-native-scrollable-tab-view]() ，但是该插件貌似有很多问题 
+> 目前发现：1）切换scence的时候没有提供切换前后的事件入口，只有一个onChange入口，导致写在这个方法的事件如果耗时较长，
+> 会卡顿，我改了下加了个afterChange事件，切换之后再加载数据
+
+> 2) 切换到别的view之后，点击触发事件时的数据还是第一个view对应的数据，看了下他用的是transform做场景切换，估计问题在这.测试了下用left定位，
+
+> 可以正确点击数据，，准备以后吧这个换成viewpager使用吧
+
+图如下
+
+
+![主页](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/screensnap/home-1.png)
+
+![详情](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/screensnap/detail-2.png)
+![详情](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/screensnap/detail-3.png)
+![详情](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/screensnap/detail-4.png)
+
 # 5、分类
 这里可以不断下拉展示N多条
 

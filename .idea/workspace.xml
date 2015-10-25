@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1aaa9eb-4726-456e-bf4c-fd02b5f4b4c2" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/cache.properties.lock" afterPath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/cache.properties.lock" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/fileHashes.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/fileHashes.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/fileSnapshots.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/fileSnapshots.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/app/src/main/res/drawable/ic_launcher.png" afterPath="$PROJECT_DIR$/android/app/src/main/res/drawable/ic_launcher.png" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/taskArtifacts.bin" afterPath="$PROJECT_DIR$/android/.gradle/2.4/taskArtifacts/taskArtifacts.bin" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/android/views/Home.js" afterPath="$PROJECT_DIR$/app/android/views/Home.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/android/views/HomeTabBar.js" afterPath="$PROJECT_DIR$/app/android/views/HomeTabBar.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app/android/views/MovieScreen.js" afterPath="$PROJECT_DIR$/app/android/views/MovieScreen.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.android.js" afterPath="$PROJECT_DIR$/index.android.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/detail-2.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/detail-3.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/detail-4.png" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/home-1.png" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
     </list>
     <ignored path="doukanmv.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -33,10 +27,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="Home.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Home.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/android/views/Home.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.35121107">
+            <state vertical-scroll-proportion="0.0">
               <caret line="210" column="52" selection-start-line="210" selection-start-column="40" selection-end-line="210" selection-end-column="52" />
               <folding>
                 <element signature="e#0#27719#0" expanded="false" />
@@ -95,11 +89,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="index.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="index.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/index.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="113" column="39" selection-start-line="113" selection-start-column="39" selection-end-line="113" selection-end-column="39" />
+            <state vertical-scroll-proportion="0.53287196">
+              <caret line="115" column="61" selection-start-line="115" selection-start-column="61" selection-end-line="115" selection-end-column="61" />
               <folding />
             </state>
           </provider>
@@ -128,13 +122,13 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/index.js" />
         <option value="$PROJECT_DIR$/app/android/views/HomeTabBar.js" />
         <option value="$PROJECT_DIR$/index.android.js" />
         <option value="$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/DefaultTabBar.js" />
         <option value="$PROJECT_DIR$/app/android/utils/VideoHelper.js" />
         <option value="$PROJECT_DIR$/app/android/views/MovieScreen.js" />
         <option value="$PROJECT_DIR$/app/android/views/Home.js" />
+        <option value="$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/index.js" />
       </list>
     </option>
   </component>
@@ -929,14 +923,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/index.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="39" selection-start-line="113" selection-start-column="39" selection-end-line="113" selection-end-column="39" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$USER_HOME$/react-native-1/Libraries/BatchedBridge/BatchedBridgedModules/NativeModules.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -963,11 +949,19 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/android/views/Home.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.35121107">
+        <state vertical-scroll-proportion="0.0">
           <caret line="210" column="52" selection-start-line="210" selection-start-column="40" selection-end-line="210" selection-end-column="52" />
           <folding>
             <element signature="e#0#27719#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/react-native-scrollable-tab-view/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.53287196">
+          <caret line="115" column="61" selection-start-line="115" selection-start-column="61" selection-end-line="115" selection-end-column="61" />
+          <folding />
         </state>
       </provider>
     </entry>
