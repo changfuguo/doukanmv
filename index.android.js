@@ -21,8 +21,9 @@ var ToolbarAndroid = require('ToolbarAndroid');
 var MainToolbar = require('./app/android/views/MainToolbar');
 var MovieScreen = require('./app/android/views/MovieScreen');
 var _navigator;
-
+var ViewPagerAndroidExample = require('./ViewPagerAndroidExample'); 
 var Home = require('./app/android/views/Home');
+var CategoryList = require('./app/android/views/CategoryList');
 
 var doukanmv = React.createClass({
 	mixins: [TimerMixin],
@@ -56,33 +57,25 @@ var doukanmv = React.createClass({
 		} else if (name === 'list_ol') {
 			return (	
 				<View style={styles.container}>
-					<Text style={styles.welcome}>
-						category
-					</Text>
+    				<CategoryList navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'search') {
 			return (	
 				<View style={styles.container}>
-					<Text style={styles.welcome}>
-						search
-					</Text>
+					<CategoryList navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'user') {
 			return (	
 				<View style={styles.container}>
-					<Text style={styles.welcome}>
-						user
-					</Text>
+					<CategoryList navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name ==='settings') {
 			return (	
 				<View style={styles.container}>
-					<Text style={styles.welcome}>
-						settings
-					</Text>
+					<CategoryList navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'video') {
