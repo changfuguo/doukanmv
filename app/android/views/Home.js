@@ -61,7 +61,7 @@ var stylesHotCell = StyleSheet.create({
 			flex: 1,
 			flexDirection: 'column',
 			justifyContent: 'center',
-			alginItems: 'center',
+			alignItems: 'center',
 			width: 100,
 			height: 180,
 		},
@@ -76,7 +76,7 @@ var stylesHotCell = StyleSheet.create({
 		},
 		name: {
 			fontSize: 12,
-			colo: '#666',
+			color: '#666',
 			height:15,
 		},
 		brief: {
@@ -117,7 +117,13 @@ var HotCell = React.createClass({
 
 		},
 		onSelect(cell){
-			ToastAndroid.show(cell.programname,ToastAndroid.SHORT);	
+			ToastAndroid.show(cell.programname,ToastAndroid.SHORT);
+			this.props.navigator && this.props.navigator.push({
+			    name:  'video',
+                id: cell.id,
+                video: cell
+
+			});
 		},
 		renderHotCellRow(rows) {
 			
@@ -174,16 +180,16 @@ var Home = React.createClass({
 			this.fetchVideos();
 		},
 		renderHots(movie){
-			return (<HotCell name={movie.name} items={movie.list} />);
+			return (<HotCell name={movie.name} items={movie.list} navigator={this.props.navigator}/>);
 		},
 		fetchVideos(){
 			var videoType = videoTypies[this.state.currentPage];
 			var value = videoType.value;
 			
-			var temp ={};
-			temp[value] = moviesMock.result;
-			this.setState(temp)
-			/*fetch('http://doukantv.com/api/hot/?type=' + value)
+//			var temp ={};
+//			temp[value] = moviesMock.result;
+//			this.setState(temp)
+			fetch('http://doukantv.com/api/hot/?type=' + value)
 				.then((res)=>res.json())
 				.then((res)=>{
 					var temp ={};
@@ -192,33 +198,15 @@ var Home = React.createClass({
 				}).catch((err)=>{
 					ToastAndroid.show('len:' + res.result.length,ToastAndroid.SHORT);
 				})
-				*/
+
 		},
-		onChange(data){
-			ToastAndroid.show('aaaaaa'+data.i,ToastAndroid.SHORT);
+		onChange (data) {
 			this.setState({currentPage: data.i - 0});
 			this.fetchVideos();
 		},
-		 _onActionSelected: function(position) {
-            this.setState({
-              actionText: 'Selected ' + toolbarActions[position].title,
-            });
-         },
+
 		render() {
 			return (
-                <View>
-                <ToolbarAndroid
-                    actions={toolbarActions}
-                    navIcon={require('image!ic_home_active')}
-                    onActionSelected={this._onActionSelected}
-                    onIconClicked={() => this.setState({actionText: 'Icon clicked'})}
-                    style={stylesHotCell.toolbar}
-                    subtitle={this.state.actionText}
-                    title="Toolbar" >
-                </ToolbarAndroid>
-                <Text>{this.state.actionText}</Text>
-                </View>
-/*
 				<View style={styles.container}>
 					<ScrollableTabView  afterChanged={this.onChange} renderTabBar={() => <HomeTabBar />}>
 						<ScrollView tabLabel='电影' style={styles.tabView}>
@@ -269,7 +257,7 @@ var Home = React.createClass({
 							})}
 						</ScrollView>
 					</ScrollableTabView>
-			    </View>*/
+			    </View>
 			);
 	  }
 });

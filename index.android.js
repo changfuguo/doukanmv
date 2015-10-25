@@ -19,6 +19,7 @@ var SplashScreen = require('./app/android/views/SplashScreen');
 var TimerMixin = require('react-timer-mixin');
 var ToolbarAndroid = require('ToolbarAndroid');
 var MainToolbar = require('./app/android/views/MainToolbar');
+var MovieScreen = require('./app/android/views/MovieScreen');
 var _navigator;
 
 var Home = require('./app/android/views/Home');
@@ -45,10 +46,11 @@ var doukanmv = React.createClass({
 	RouteManager: function (route, navigationOperations, onComponentRef) {
 		_navigator = navigationOperations;
 		var name = route.name;
+
 		if (name == 'home') {
 			return (	
 				<View style={styles.container}>
-					<Home />
+					<Home  navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'list_ol') {
@@ -83,6 +85,8 @@ var doukanmv = React.createClass({
 					</Text>
 				</View>
 			);
+		} else if (name === 'video') {
+			return (<MovieScreen navigator= {navigationOperations} id = {route.id} video={route.video} />);
 		}
 	},
 	onSelectMenu : function (name) {

@@ -14,56 +14,344 @@ var {
     ToastAndroid,
     Navigator,
     ToolbarAndroid,
+    Dimensions,
+    Animated,
+    ScrollView
 } = React;
 
-var online = false;
+var VideoHelper = require('../utils/VideoHelper');
 
+var deviceWidth =  Dimensions.get('window').width;
+var deviceHeight  = Dimensions.get('window').height;
+var SEP_WIDTH =(deviceWidth - 15 * 2) / 3;
+var online = false;
+var showActions = ['play','download','detail'];
+
+var cacheLinks = {};
 var MoiveScreen = React.createClass({
     getInitialState () {
         return {
-            isLoading: false,
-            data: null,
+            isLoading: true,
+            video: null,
             type: this.props.type,
-            videos: null,
-            episode: false
+            links: null,
+            episode: false,
+            currentPage: 0,
+            scrollValue: new Animated.Value(0),
+            currentSource:null,
+            download :{
+
+            },
+            play:{
+
+            },
         }
     },
     goBack () {
-        var navigator = this.props.navigator
+        var navigator = this.props.navigator;
         if( navigator && navigator.getCurrentRoutes().length > 0){
             navigator.pop();
         }
     },
     componentDidMount () {
         var state = {};
-        if(this.props.type === 'movie'){
-            state.episode = false
-        } else {
-            state.episode = true;
-        }
-        if (online === false) {
-            state.data = videoMock.data;
-            state.videos = videoMock.videos;
-            state.isLoading = true;
-         }else {
-            // fetch data from remote address
-        }
+
+        fetch('http://doukantv.com/api/program/?id=' + this.props.id)
+            .then((res) => res.json())
+            .then((res)=>{
+                this.setState({
+                    video: res.data,
+                    links: res.videos,
+                    episode: !res.data.videotype === 'movie',
+                    isLoading : false
+                })
+                res.videos.map((link)=>{
+
+                    var source = VideoHelper.getSource(link.videourl);
+                    cacheLinks[source.value] = link.urls;
+                    if(this.state.currentSource){
+                        this.setState({currentSource:source.value});
+                    }
+                })
+
+            });
+
+//        state.video = videoMock.data;
+//        state.links = videoMock.videos;
+//        state.isLoading = false;
+//        state.episode = false;
+
+
+        //this.setState({video:state.video,links:state.links,isLoading: false});
     },
-    render () {
+
+    show (current) {
+        ToastAndroid.show('current:' + current,ToastAndroid.SHORT);
+        this.setState({currentPage:current});
+        Animated.spring(this.state.scrollValue, {toValue: current, friction: 10, tension: 50}).start();
+    },
+    selectSource (source){
+        ToastAndroid.show('in selectSource:' + source,ToastAndroid.SHORT);
+        this.setState({currentSource:source});
+    },
+    selectLink(current){
+         var action = showActions[this.state.currentPage];
+         var cs = this.state.currentSource;
+         if(action == 'play'){
+            ToastAndroid.show('in play:' + current.url,ToastAndroid.SHORT);
+         }
+
+         if(action == 'download') {
+            ToastAndroid.show('in download:' + current.url,ToastAndroid.SHORT);
+         }
+    },
+    renderBottomPanel(currentPage,currentSource){
+        ToastAndroid.show('in renderBottomPanel:' + currentPage+';'+currentSource,ToastAndroid.SHORT);
+        var action = showActions[currentPage];
+        var content = null;
+         var TouchableElement = TouchableHighlight;
+            if (Platform.OS === 'android') {
+                TouchableElement = TouchableNativeFeedback;
+         }
+        if(action == 'play' || action == 'download'){
+             var currents = cacheLinks[currentSource];
+             if(!currents) return null;
+             content = currents.map((current)=>{
+                    return(
+                          <TouchableElement onPress={()=> this.selectLink(current)}>
+                                <View style={[styles.linkItem,styles.actionItem]}>
+                                    <Text >{current.seq}</Text>
+                                </View>
+                          </TouchableElement>
+
+                    );
+             })
+        } else if(action == 'detail') {
             return (
-                <View style={styles.container} >
+                    <View style={{flex:1}}>
+                        <Text numberOfLines={14}>{this.state.video.programedesc}</Text>
+                    </View>
+            );
+        }
+        return content;
+    },
+    renderSource(){
+        var action = showActions[this.state.currentPage];
+        var TouchableElement = TouchableHighlight;
+        if (Platform.OS === 'android') {
+            TouchableElement = TouchableNativeFeedback;
+        }
+        if(action == 'detail') {
+
+            return null;
+        }
+        var sources = this.state.links.map((link)=>{
+            var source = VideoHelper.getSource(link.videourl);
+            if(!source) return null;
+            if(!this.state.currentSource){
+                this.setState({currentSource:source.value});
+            }
+            return(
+                <TouchableElement onPress={()=> this.selectSource(source.value)}>
+                    <View style={[styles.sourceItem,styles.actionItem,{backgroundColor: this.state.currentSource == source.value?'#ddd':'#fff'}]}>
+                        <Text >{source.name}</Text>
+                    </View>
+                </TouchableElement>
+            );
+
+        })
+
+        return (
+                <View style={[styles.row,styles.sourceRow]}>
+                {sources}
                 </View>
             );
+
+    },
+    render () {
+        if(this.state.isLoading){
+            return (
+                <View style={styles.container}>
+                    <Text>正在加载...</Text>
+                </View>
+            );
+        }
+
+        var TouchableElement = TouchableHighlight;
+        if (Platform.OS === 'android') {
+            TouchableElement = TouchableNativeFeedback;
+        }
+
+        var tabUnderlineStyle = {
+          position: 'absolute',
+          width: SEP_WIDTH,
+          height: 2,
+          backgroundColor: 'purple',
+          bottom: 0,
+        };
+
+        var left = this.state.scrollValue.interpolate({
+              inputRange: [0, 1], outputRange: [0, SEP_WIDTH]
+        });
+        return (
+            <View style={styles.container} >
+                <View style={[styles.toolbar]}>
+                    <TouchableElement onPress={()=>this.goBack()}>
+                          <View  style={styles.actionItem}>
+                                  <Image
+                                    style={styles.backIcon}
+                                    source={require('image!ic_back_white')}
+                                    resizeMode='contain' />
+                          </View>
+                    </TouchableElement>
+                    <View  style={styles.actionItem}>
+                        <Text style={styles.title}>{this.state.video.programname}</Text>
+                    </View>
+                </View>
+                <View style={styles.main}>
+                    <View style={styles.row}>
+                        <View style={styles.coverWrapper}>
+                            <Image source={{uri:this.state.video.vthumburl}} style={styles.cover} />
+                        </View>
+                        <View style={styles.descWrapper}>
+                            <Text  style={styles.showtxt}>导演：{this.state.video.director}</Text>
+                            <Text style={styles.showtxt}>年代：{this.state.video.year}</Text>
+                            <Text style={styles.showtxt} numberOfLines={2}>演员：{this.state.video.craw}</Text>
+                            <Text style={styles.showtxt}>地区：{this.state.video.area}</Text>
+                        </View>
+                    </View>
+                    <View style={[styles.row,styles.btnRow]}>
+                           <TouchableElement onPress={()=>this.show(0)}>
+                                  <View  style={[styles.actionItem,styles.btnItem]}>
+                                       <Text>播放</Text>
+                                  </View>
+
+                           </TouchableElement>
+                           <TouchableElement onPress={()=>this.show(1)}>
+                                  <View  style={[styles.actionItem,styles.btnItem,]}>
+                                         <Text>下载</Text>
+                                  </View>
+
+                           </TouchableElement>
+                           <TouchableElement onPress={()=>this.show(2)}>
+                                 <View  style={[styles.actionItem,styles.btnItem,]}>
+                                        <Text>详情</Text>
+                                 </View>
+                            </TouchableElement>
+                            <Animated.View style={[tabUnderlineStyle,{left}]} />
+                    </View>
+                    <ScrollView style={[styles.row,styles.sourceRow]} horizontal={true}>
+                        {this.renderSource(this.state.currentPage)}
+                    </ScrollView>
+                    <ScrollView style={{height:220}}>
+                        <View style ={[styles.row,styles.panelRow]} >
+                            {this.renderBottomPanel(this.state.currentPage,this.state.currentSource)}
+                        </View>
+                    </ScrollView>
+                </View>
+            </View>
+        );
     }
 });
-
 var styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'column',
-        padding: 5
-    }
+    },
+    main:{
+        paddingLeft: 15,
+        paddingRight: 15,
+        marginTop:20
+    },
+    row:{
+        flex:1,
+        flexDirection: 'row'
+    },
+    coverWrapper:{
+        marginRight:5,
+        width:100,
+        height:130,
+        flexDirection:'column',
+        marginRight:20
+    },
+    cover:{
+        width:100,
+        height:130,
 
+    },
+    toolbar:{
+        backgroundColor:'#3a3941',
+        height:30,
+        alignItems:'center',
+        flexDirection:'row',
+        textAlign:'center',
+        paddingRight:46
+    },
+    seperator: {
+        position:'absolute',
+        left:0,
+        bottom:0,
+        width:100,
+        height:1/PixelRatio.get(),
+    },
+    actionItem: {
+        height: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        paddingLeft: 8,
+        paddingRight: 8,
+    },
+    linkItem:{
+        width:40,
+        height:40,
+        alignItems: 'center',
+        justifyContent: 'space-around',
+        border:1,
+        borderColor: 'red',
+        backgroundColor:'#fff',
+        marginRight:5,
+        marginTop:5,
+        color:'#000'
+    },
+    sourceItem:{
+        borderRadius: 3,
+        border:1,
+        borderColor:'red',
+        width: 50,
+        marginRight:10,
+        marginTop:10
+    },
+    sourceRow:{
+        justifyContent:'flex-start',
+        flexWrap:'nowrap',
+        height:40,
+    },
+    panelRow:{
+        justifyContent:'space-between',
+        flexWrap:'wrap',
+        marginTop:10
+    },
+    btnRow:{
+        height:50,
+        marginTop:20,
+    },
+    btnItem:{
+        height: 50,
+        flex:1,
+    },
+    showtxt:{
+        marginTop:3,
+        marginBottom:3
+    },
+    backIcon:{
+        width:20,
+        height:20,
+    },
+    title:{
+        color: '#fff',
+        flex:1
+    }
 
 });
 

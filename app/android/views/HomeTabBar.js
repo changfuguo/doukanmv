@@ -27,15 +27,15 @@ var styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-around',
 		backgroundColor:'#3a3941',
-		borderTopRadius: 3,
-		borderRightRadius: 3,
+		borderTopLeftRadius: 3,
+		borderTopRightRadius: 3,
 	},
 	arrow :{
 		height:10,
 		width:10,
 		padding:0,
 		marginTop:-1,
-		rotation:90
+//		rotation:90
 	}
 });
 
