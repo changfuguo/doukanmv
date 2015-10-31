@@ -21,7 +21,6 @@ var ToolbarAndroid = require('ToolbarAndroid');
 var MainToolbar = require('./app/android/views/MainToolbar');
 var MovieScreen = require('./app/android/views/MovieScreen');
 var _navigator;
-var ViewPagerAndroidExample = require('./ViewPagerAndroidExample'); 
 var Home = require('./app/android/views/Home');
 var CategoryList = require('./app/android/views/CategoryList');
 
@@ -31,9 +30,9 @@ var doukanmv = React.createClass({
 		return {
 			splashed: false,
 			currentRoute :{
-				name :'home'	
+				name :'home'
 			}
-		};	  
+		};
 	},
 	componentDidMount: function () {
 		this.setTimeout(
@@ -49,33 +48,33 @@ var doukanmv = React.createClass({
 		var name = route.name;
 
 		if (name == 'home') {
-			return (	
+			return (
 				<View style={styles.container}>
 					<Home  navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'list_ol') {
-			return (	
+			return (
 				<View style={styles.container}>
     				<CategoryList navigator ={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'search') {
-			return (	
+			return (
 				<View style={styles.container}>
-					<CategoryList navigator ={navigationOperations}/>
+					<Text>search</Text>
 				</View>
 			);
 		} else if (name === 'user') {
-			return (	
+			return (
 				<View style={styles.container}>
-					<CategoryList navigator ={navigationOperations}/>
+					<Text>user</Text>
 				</View>
 			);
 		} else if (name ==='settings') {
-			return (	
+			return (
 				<View style={styles.container}>
-					<CategoryList navigator ={navigationOperations}/>
+					<Text>settings</Text>
 				</View>
 			);
 		} else if (name === 'video') {
@@ -87,7 +86,7 @@ var doukanmv = React.createClass({
 		if (_navigator && _navigator.getCurrentRoutes().length > 0) {
 			_navigator.replace({name:this.state.currentRoute.name});
 		}
-		ToastAndroid.show('click ' + name,ToastAndroid.SHORT);	
+		ToastAndroid.show('click ' + name,ToastAndroid.SHORT);
 	},
 	render: function() {
 		if(!this.state.splashed) {
@@ -96,7 +95,7 @@ var doukanmv = React.createClass({
 			);
 		}
 		var test = [{name:"chang"}];
-		return (    
+		return (
 			<View style={styles.container}>
 				<Navigator
 					style={styles.container}
@@ -105,8 +104,8 @@ var doukanmv = React.createClass({
 					renderScene={this.RouteManager}
 				>
 				</Navigator>
-				<MainToolbar 
-					style={styles.maintoolbar}  
+				<MainToolbar
+					style={styles.maintoolbar}
 					currentroute={this.state.currentRoute} onselect={this.onSelectMenu}/>
 			</View>
 			);

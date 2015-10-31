@@ -61,7 +61,7 @@ var DefaultTabBar = React.createClass({
     var numberOfTabs = this.props.tabs.length;
     var tabUnderlineStyle = {
       position: 'absolute',
-	  justfiyContent: 'center',
+	  justifyContent: 'center',
 	  alignItems: 'center',
       width: deviceWidth / numberOfTabs,
       height: 10,

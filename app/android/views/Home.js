@@ -180,15 +180,12 @@ var Home = React.createClass({
 			this.fetchVideos();
 		},
 		renderHots(movie){
-			return (<HotCell name={movie.name} items={movie.list} navigator={this.props.navigator}/>);
+			return (<HotCell key={'hotcell_' + movie.id} name={movie.name} items={movie.list} navigator={this.props.navigator}/>);
 		},
 		fetchVideos(){
 			var videoType = videoTypies[this.state.currentPage];
 			var value = videoType.value;
-			
-//			var temp ={};
-//			temp[value] = moviesMock.result;
-//			this.setState(temp)
+
 			fetch('http://doukantv.com/api/hot/?type=' + value)
 				.then((res)=>res.json())
 				.then((res)=>{

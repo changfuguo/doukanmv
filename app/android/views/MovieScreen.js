@@ -307,7 +307,7 @@ var styles = StyleSheet.create({
         height:40,
         alignItems: 'center',
         justifyContent: 'space-around',
-        border:1,
+        borderWidth:1,
         borderColor: 'red',
         backgroundColor:'#fff',
         marginRight:5,
@@ -316,7 +316,7 @@ var styles = StyleSheet.create({
     },
     sourceItem:{
         borderRadius: 3,
-        border:1,
+        borderWidth:1,
         borderColor:'red',
         width: 50,
         marginRight:10,
