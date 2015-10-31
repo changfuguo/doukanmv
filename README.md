@@ -175,9 +175,9 @@ android 里面的图片需要设置好几种样式，同时还的去找不同图
             );
       },
 
-    图片效果图如下
-    
-    ![category](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/category.png)
+图片效果图如下
+
+![category](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/category.png)
 # 6、搜索
 
 # 7、用户中心
