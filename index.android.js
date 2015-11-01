@@ -21,8 +21,9 @@ var ToolbarAndroid = require('ToolbarAndroid');
 var MainToolbar = require('./app/android/views/MainToolbar');
 var MovieScreen = require('./app/android/views/MovieScreen');
 var _navigator;
-var Home = require('./app/android/views/Home');
+var Hot = require('./app/android/views/Hot');
 var CategoryList = require('./app/android/views/CategoryList');
+var ListGrid = require('./app/android/views/ListGrid');
 
 var doukanmv = React.createClass({
 	mixins: [TimerMixin],
@@ -50,19 +51,19 @@ var doukanmv = React.createClass({
 		if (name == 'home') {
 			return (
 				<View style={styles.container}>
-					<Home  navigator ={navigationOperations}/>
+					<Hot  navigator={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'list_ol') {
 			return (
 				<View style={styles.container}>
-    				<CategoryList navigator ={navigationOperations}/>
+    				<CategoryList navigator={navigationOperations}/>
 				</View>
 			);
 		} else if (name === 'search') {
 			return (
 				<View style={styles.container}>
-					<Text>search</Text>
+					<ListGrid />
 				</View>
 			);
 		} else if (name === 'user') {
