@@ -120,8 +120,64 @@ android 里面的图片需要设置好几种样式，同时还的去找不同图
 ![详情](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/screensnap/detail-4.png)
 
 # 5、分类
-这里可以不断下拉展示N多条
+分类里按照4个分类展开，在主页里用了react-native-scrollable-tab-view，发现两个问题
 
+1. 滑动卡顿比较明显
+2. 切换了分类之后，点击进去的还是第一个分类对应的video
+
+所以，这里得出一条结论  ***能用原生组件的就用原生组件，不能用的再去找组件***，因为android的刚出来没多久，版本还在快速更新迭代中，尽量用官放的东西
+
+
+这里的分类和滑动采用 官方提供的 ViewPagerAndroid，上面的tab根据当前滑动的位置进行计算，类似于js的幻灯片组件一个道理
+
+      render: function() {
+            var pages = [];
+            for (var i = 0; i < videoTypies.length; i++) {
+                  var pageStyle = {
+                    backgroundColor:'#fff',
+                    alignItems: 'center',
+                    padding: 20,
+                  };
+                  var videoType = videoTypies[i];
+                  pages.push(
+                       <View key={i} style={styles.pageStyle} collapsable={true}>
+                              <ListView
+                                   ref="listview"
+                                   dataSource={this.state[videoType.value]}
+                                   renderRow={this.renderRow}
+                                   onEndReached={()=> { this.onEndReached(videoType.value)}}
+                                   automaticallyAdjustContentInsets={false}
+                                   keyboardDismissMode="on-drag"
+                                   keyboardShouldPersistTaps={true}
+                                   showsVerticalScrollIndicator={false}
+                                   initialListSize={6}
+                                   onEndReachedThreshold={50}
+                                   pageSize={4}
+                                   renderHeader={this.renderHeader}
+                                   renderFooter={this.renderFooter}
+                                 />
+                      </View>
+              );
+            }
+            var page = this.state.page;
+            return (
+              <View style={styles.container}>
+                <CategoryTabBar  go={this.go} page ={this.state.page} progress={this.state.progress}/>
+                <ViewPagerAndroid
+                  style={styles.viewPager}
+                  initialPage={0}
+                  onPageScroll={this.onPageScroll}
+                  onPageSelected={this.onPageSelected}
+                  ref={viewPager => { this.viewPager = viewPager; }}>
+                  {pages}
+                </ViewPagerAndroid>
+              </View>
+            );
+      },
+
+图片效果图如下
+
+![category](https://raw.githubusercontent.com/changfuguo/doukanmv/master/temp/category.png)
 # 6、搜索
 
 # 7、用户中心
