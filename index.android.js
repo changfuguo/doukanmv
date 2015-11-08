@@ -24,7 +24,8 @@ var _navigator;
 var Hot = require('./app/android/views/Hot');
 var CategoryList = require('./app/android/views/CategoryList');
 var ListGrid = require('./app/android/views/ListGrid');
-
+var Search = require('./app/android/views/Search');
+var Demo = require('./app/android/views/Demo');
 var doukanmv = React.createClass({
 	mixins: [TimerMixin],
 	getInitialState : function () {
@@ -69,13 +70,13 @@ var doukanmv = React.createClass({
 		} else if (name === 'user') {
 			return (
 				<View style={styles.container}>
-					<Text>user</Text>
+					<Search/>
 				</View>
 			);
 		} else if (name ==='settings') {
 			return (
 				<View style={styles.container}>
-					<Text>settings</Text>
+					<Demo/>
 				</View>
 			);
 		} else if (name === 'video') {

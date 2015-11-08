@@ -15,9 +15,14 @@
                 TouchableHighlight,
                 TouchableNativeFeedback,
                 Dimensions,
+                PanResponder,
             } = React;
 
+            var createElementFrom = require('../components/createElementFrom')
+            var RefreshingIndicator = require('../components/RefreshingIndicator')
 
+            var SCROLL_EVENT_THROTTLE = 32
+            var MIN_PULLDOWN_DISTANCE = 40
             var TimerMixin = require('react-timer-mixin');
             var PAGE_SIZE =  15;
             var CategoryTabBar = require('./CategoryTabBar');
@@ -46,6 +51,8 @@
                         return {
                             page: 0,
                             progress: {position: 0, offset: 0},
+                            waitingForRelease: false,
+                            isRefreshing: false,
                             movie: {
                                 data: dataSource(),
                                 loading : 0
@@ -66,8 +73,46 @@
                         };
                     },
 
-                    componentWillMount () {
+                    getDefaultProps() {
+                        return {
+                          minPulldownDistance: MIN_PULLDOWN_DISTANCE,
+                          scrollEventThrottle: SCROLL_EVENT_THROTTLE,
+                          ignoreInertialScroll: true,
+                          refreshingIndictatorComponent: RefreshingIndicator,
 
+                          refreshDescription: '刷新数据吧'
+                        }
+                    },
+                    _handlePanResponderGrant: function(e: Object, gestureState: Object) {
+                        this.isTouching = true
+                        console.log('_handlePanResponderGrant');
+                        return true;
+
+                    },
+                    _handlePanResponderMove: function(e: Object, gestureState: Object) {
+                        console.log('_handlePanResponderMove');
+                        //this.listViewScroll(e);
+                        return true;
+                    },
+                    _handlePanResponderEnd: function(e: Object, gestureState: Object) {
+
+                        this.isTouching = false;
+                        console.log('_handlePanResponderEnd');
+                    },
+                    componentWillMount () {
+                        this._panResponder = PanResponder.create({
+                            onStartShouldSetPanResponder: () => true,
+                            onMoveShouldSetPanResponder: () => true,
+                            onPanResponderGrant: this._handlePanResponderGrant,
+                            onPanResponderMove: this._handlePanResponderMove,
+                            onPanResponderEnd: this._handlePanResponderEnd,
+                            onPanResponderTerminate:this._handlePanResponderEnd,
+                        });
+
+                    },
+                    getScrollResponder() {
+                        var type = videoTypies[this.state.page].value;
+                        return this.refs['listview_'+type].getScrollResponder()
                     },
                     componentDidMount () {
                         this.fetchData();
@@ -77,7 +122,7 @@
                         var type = videoTypies[page].value;
 
                         var loading = this.state[type].loading;
-                        if(loading === 1 || loading === 2) return;
+                        if(loading === 1) return;
                         var url = 'http://doukantv.com/api/hot/?type=' + type;
                         this.state[type].loading = 1;
                         fetch(url)
@@ -86,7 +131,7 @@
                                 var temp ={};
                                 temp[type] = {
                                     data: this.getDataSource(type, res.result),
-                                    loading: 2
+                                    loading: 0
                                 }
                                 this.setState(temp);
                             })
@@ -172,17 +217,33 @@
 
                         );
                   },
-                  renderSectionHeader: function(sectionData: Object,
-                      sectionID: number | string) {
+                renderSectionHeader: function(sectionData: Object,
+                    sectionID: number | string) {
                         return (
-                              <View style={styles.sectionHeader}>
-                                  <Text >| {sectionData.name}</Text>
-                              </View>
-                        );
+                            <View style={styles.sectionHeader}>
+                                <Text >| {sectionData.name}</Text>
+                            </View>
+                    );
 
-                  },
-                onChangeVisibleRows (visibleRows, changedRows) {
-                    ToastAndroid.show('aaa',ToastAndroid.SHORT);
+                },
+                listViewScroll (e) {
+                    //ToastAndroid.show(videoType + '',ToastAndroid.SHORT);
+                     console.log('listViewScroll')
+
+                    var scrollY = e.nativeEvent.contentInset.top + e.nativeEvent.contentOffset.y
+                    this.lastScrollY = scrollY
+                    this.lastContentInsetTop = e.nativeEvent.contentInset.top
+                    this.lastContentOffsetX = e.nativeEvent.contentOffset.x
+
+                    if (this.isTouching || (!this.isTouching && !this.props.ignoreInertialScroll)) {
+                        if (scrollY < -this.props.minPulldownDistance) {
+                            if (!this.state.isRefreshing) {
+                                setTimeout(()=>{
+                                    this.state.isRefreshing = true;
+                                },1000);
+                            }
+                        }
+                    }
                 },
                 render: function() {
                     var pages = [];
@@ -196,18 +257,21 @@
                         pages.push(
                                <View key={i} style={styles.pageStyle} collapsable={true}>
                                       <ListView
-                                           ref="listview"
+                                           {...this._panResponder.panHandlers}
+                                           ref={"listview" + '_' +videoType.value}
                                            dataSource={this.state[videoType.value].data}
                                            renderRow={this.renderRow}
                                            automaticallyAdjustContentInsets={false}
                                            keyboardDismissMode="on-drag"
+                                           onScroll = {this.listViewScroll}
+
+                                           renderHeader = {this.renderHeader}
                                            keyboardShouldPersistTaps={true}
                                            renderSectionHeader={this.renderSectionHeader}
                                            showsVerticalScrollIndicator={true}
                                            initialListSize={12}
                                            onEndReachedThreshold={50}
                                            pageSize={6}
-                                           onChangeVisibleRows = {this.onChangeVisibleRows}
                                            contentContainerStyle={styles.list}
                                          />
                               </View>
@@ -227,7 +291,19 @@
                         </ViewPagerAndroid>
                       </View>
                     );
-              },
+            },
+            renderHeader() {
+                var description = this.props.refreshDescription
+
+                var refreshingIndictator
+                if (this.state.isRefreshing) {
+                    refreshingIndictator = createElementFrom(this.props.refreshingIndictatorComponent, {description})
+                } else {
+                    refreshingIndictator = null
+                }
+
+                return refreshingIndictator;
+            },
             });
 
             var styles = StyleSheet.create({
