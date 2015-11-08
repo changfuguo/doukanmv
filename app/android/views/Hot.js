@@ -83,37 +83,12 @@
                           refreshDescription: '刷新数据吧'
                         }
                     },
-                    _handlePanResponderGrant: function(e: Object, gestureState: Object) {
-                        this.isTouching = true
-                        console.log('_handlePanResponderGrant');
-                        return true;
-
-                    },
-                    _handlePanResponderMove: function(e: Object, gestureState: Object) {
-                        console.log('_handlePanResponderMove');
-                        //this.listViewScroll(e);
-                        return true;
-                    },
-                    _handlePanResponderEnd: function(e: Object, gestureState: Object) {
-
-                        this.isTouching = false;
-                        console.log('_handlePanResponderEnd');
-                    },
+ 
                     componentWillMount () {
-                        this._panResponder = PanResponder.create({
-                            onStartShouldSetPanResponder: () => true,
-                            onMoveShouldSetPanResponder: () => true,
-                            onPanResponderGrant: this._handlePanResponderGrant,
-                            onPanResponderMove: this._handlePanResponderMove,
-                            onPanResponderEnd: this._handlePanResponderEnd,
-                            onPanResponderTerminate:this._handlePanResponderEnd,
-                        });
+
 
                     },
-                    getScrollResponder() {
-                        var type = videoTypies[this.state.page].value;
-                        return this.refs['listview_'+type].getScrollResponder()
-                    },
+
                     componentDidMount () {
                         this.fetchData();
                     },
@@ -257,7 +232,6 @@
                         pages.push(
                                <View key={i} style={styles.pageStyle} collapsable={true}>
                                       <ListView
-                                           {...this._panResponder.panHandlers}
                                            ref={"listview" + '_' +videoType.value}
                                            dataSource={this.state[videoType.value].data}
                                            renderRow={this.renderRow}
