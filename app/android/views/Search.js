@@ -156,7 +156,9 @@ var ListViewSimpleExample = React.createClass({
         };
 
         var listStyle = {
-            translateY: this.state.scrollY,
+            transform: [{
+                translateY: this.state.scrollY,
+            }]
         };
         return (
 
